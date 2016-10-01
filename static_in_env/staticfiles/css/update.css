@@ -1,0 +1,32 @@
+
+h5{
+	color:white;
+}
+body{
+	background: url('/static/img/detailbackg.png') no-repeat center center;
+    webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height:100%;
+
+
+}
+.content-wrapper{
+	margin-top:1em;
+
+}
+
+.tab-wrapper{
+	margin-top:2em;
+}
+
+.tabs .tab a{
+	color:black;
+}
+.tabs .indicator {
+  background-color:#26a69a;
+}
+h5{
+	text-shadow: 1px 1px 1px #000;
+}

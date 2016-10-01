@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<title>Search | WheelDine</title>
+{% endblock %}
+
+{% block style %}
+<style>
+body {
+  background-color:#f5f5f5;
+}
+.results-wrapper{
+    margin-top:3%;
+}
+.results-wrapper .container{
+  width:85%;
+}
+.navbar a{
+    color:white;
+}
+input{
+    color:black;
+}
+
+
+#content-wrapper{
+    margin-bottom:25px;
+}
+
+input{
+  color:white;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="navbar">
+    <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <div class="hide-on-med-and-down">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+      </div>
+        <ul class="right hide-on-small-only">
+          <li><form class="navbar-form navbar-right" role="search" action='.' method="GET">
+                    <div class="form-group">
+                        <input id="search" type="text" name="q" placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+                <li><a href="{% url 'select_form' %}">Add a Foodtruck</a></li>
+          <li><a href="{% url 'map' %}">Map</a></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}" class="navbutton">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+        <div class="hide-on-med-and-up">
+          <form action='.'>
+        <div class="input-field">
+          <input id="search" type="text" name="q" placeholder="Search by name, city, state, zip code">
+          <label for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+      </div>
+    </nav>
+  </div>
+
+<div class="results-wrapper">
+<div class='row'>
+  <div class='col s12 m10 l8 offset-l2 offset-m1'>
+    <div class="card">
+<div class="card-content">
+    <div class="row center">
+      <div class="hide-on-large-only">
+           <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+           <br>
+      </div>
+        <span class="card-title"><b>Results:</b></span>
+    </div>
+
+        {% if query %}
+
+            {% for result in page.object_list %}
+            {% if result.model_name == 'plustruck' %}
+            <div class="container-fluid">
+                <div class="row" id="content-wrapper">
+                    <div class="col s5 m3 l2">
+                            <img src="{{ result.object.truck_image_url }}" height="90" width="125">
+                    </div>
+                <div class="col s6 m9 l10">
+                <a href='{{ result.object.get_absolute_url }}'><h5>{{ result.object.plus_truck_name }}</h5></a>
+                {% if result.object.plus_address %}
+                    <p>{{ result.object.plus_address }} - {{ result.object.plus_city }}, {{ result.object.plus_state }}</p>
+                    {{ object.truck.plus_postal_code}}
+                {% else %}
+                <p>{{ result.object.plus_city }}, {{ result.object.plus_state }}</p>
+                {% endif %}
+                 <div class="hide-on-med-and-up">
+                <div class="divider"></div>
+            </div>
+                </div>
+                </div>
+            {% endif %}
+            {% empty %}
+                <p>No results found</p>
+            {% endfor %}
+          </div>
+
+
+
+          {% for result in page.object_list %}
+           {% if result.model_name == 'basetruck' %}
+
+            <div class="container-fluid">
+                <div class="row" id="content-wrapper">
+                    <div class="col s5 m3 l2">
+                            <img src="/static/img/basetruck.png" height="90" width="125">
+                    </div>
+                <div class="col s6 m9 l10">
+                <h5>{{ result.object.base_truck_name }}</h5>
+                {% if result.object.base_address %}
+                    <p>{{ result.object.base_address }} - {{ result.object.base_city }} {{ result.object.base_state }}</p>
+                    {{ object.truck.base_postal_code}}
+                {% else %}
+                <p>{{ result.object.base_city }}, {{ result.object.base_state }}</p>
+                {% endif %}
+                  <div class="hide-on-med-and-up">
+                <div class="divider"></div>
+            </div>
+                </div>
+                </div>
+            {% endif %}
+            {% empty %}
+            {% endfor %}
+          </div>
+
+<div class="row center">
+    <div class="col s12 m12 l12">
+           <ul class="pagination">
+            <span class="step-links">
+            {% if page.has_previous %}
+                <li class="waves-effect"><a href="?page={{ page_obj.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for pg in page.paginator.page_range %}
+            {% if page.number == pg %}
+                <li class="active teal"><a href="?page={{ pg }}">{{ pg }}</a></li>
+            {% else %}
+                <li class="waves-effect teal"><a href="?page={{ pg }}">{{ pg }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+
+
+        {% if page_obj.has_next %}
+            <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+
+            <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        {% endif %}
+    </span>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+              </div>
+          </div>
+      </div>
+
+
+{% else %}
+{% endif %}
+{% endblock %}

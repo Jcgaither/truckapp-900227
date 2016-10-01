@@ -1,0 +1,9 @@
+
+nav ul li a{
+  color: black;
+} 
+
+#messages{
+  position: fixed;
+  width:100%;
+}

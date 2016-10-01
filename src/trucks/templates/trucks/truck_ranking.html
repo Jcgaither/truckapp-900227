@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<title>Top Trucks | WheelDine</title>
+
+{% endblock %}
+{% block style %}
+<style>
+body {
+    height:100%;
+  background-color:#edefed;
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.wrapper h4{
+    color:#565a5c;
+}
+
+.title-info{
+   color:#565a5c;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+.image { 
+  background: black;
+  display: inline-block;
+   position: relative; 
+ /* for IE 6 */
+}
+.image:hover img{
+  opacity: 0.6;
+
+}
+
+#img-text{
+  top: 10%; 
+  position: absolute;
+  left: 0;
+  width: 100%; 
+  }
+h6 span{
+  color: white; 
+  background: rgb(0, 0, 0);  /* fallback color */
+   background: rgba(0, 0, 0, 0.4);
+   padding: 7px;
+}
+
+h6 span.spacer {
+   padding:0 0px;
+   margin-left:4px;
+}
+
+
+</style>
+{% endblock %}
+{% block content %}
+ <div class="navbar">
+    <nav class="blue-grey darken-4">
+      <div class="nav-wrapper container-fluid">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="{% url 'map' %}">Map</a></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}"><span style="border: 2px solid white; border-radius:2px;padding: 10px 13px;">Create an account</span></a></li></li>
+  {% endif %}
+
+
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="{% url 'map' %}">Map</a></li>
+ 
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}"><span style="border: 2px solid white; border-radius:2px;padding: 10px 13rpx;">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+</div>
+
+        </nav>
+      </div>
+      <div class="wrapper">
+      <div class="container">
+    <div class="row center">
+        <h4><b>Top 10 Trucks</b></h4>
+        <p class="title-info"><i>*Updated weekly</i></p>
+        
+      </div>
+      <div class="container-fluid">
+            <div class="row">
+      
+      {% for object in top_trucks %}
+<div class="col s12 m12 l3 offset-m4 offset-s4">
+  <div class="image">
+               
+            
+                        <a href='{{ object.get_absolute_url }}'><img class="activator" id="featured-image" src="{{ object.truck_image_url }}" height="160" width="230">
+                        <h6 id="img-text"><span>{{object.plus_truck_name}} <span class='spacer'></span><br /><br><span class='spacer'></span>{{object.plus_city}}, {{object.plus_state}}</span></h6>
+                        </a>
+                      </div>
+                        
+
+                    
+<!-- <a href='{{ object.get_absolute_url }}'><h6 data-tooltip="{{object.plus_truck_name}}" data-delay="10" data-position="top" class="collection-item tooltipped"><b>{{object.plus_truck_name|truncatechars:17}}</b></h6></a>
+                        <p>{{object.plus_city}}, {{object.plus_state}}  
+ -->                              
+                        </div>
+                 
+                       
+
+
+{% endfor %}
+</div>
+       </div>
+ </div>
+
+                        </div>
+
+
+
+
+</div>
+</div>
+  {% endblock %}

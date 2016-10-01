@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<title>About | WheelDine</title>
+{% endblock %}
+{% block style %}
+<style>
+#about-content{
+  margin-top:4.5%
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container" id="about-content">
+  <div class="row center">
+    <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="35" alt="WheelDine"></a>
+  </div>
+   <div class="divider"></div>
+   <div class="row">
+   <h3 class="thin center">About</h3>
+   <p class="flow-text">WheelDine was created to eliminate the gap between consumer and Foodtruck.</p>
+   <blockquote class="flow-text">"Any idea which Foodtrucks are outside?"</blockquote>
+   <p class="flow-text">
+     My old cubical was convenitently located in the back of the office, near the exit.
+     Around lunchtime, I heard this question, verbatim, almost every day. </p>
+   <p class="flow-text">We want WheelDine to be the <span style="color:#ff5252">smoothest</span> way to connect with all of our favorite vendors out there. </p>
+   <p class="flow-text">If you have access to a mobile phone, tablet or a computer,
+     you can utilize WheelDine and help us make this great. </p>
+
+
+
+   <p class="flow-text"> </p>
+   {% endblock %}

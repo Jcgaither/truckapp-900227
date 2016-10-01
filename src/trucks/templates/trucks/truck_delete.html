@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>Delete Request | WheelDine</title>
+<link rel="stylesheet" href="{% static "css/truck_delete.css" %}">
+{% endblock %}
+
+{% block style %}
+
+
+{% endblock %}
+
+
+{% block content %}
+   <div class="navbar">
+     <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+
+        </ul>
+            <ul id="nav-mobile" class="side-nav">
+    {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+</ul>
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+
+      </div>
+
+    </nav>
+  </div>
+
+
+
+
+<div class='content-wrapper'>
+
+
+
+		<div class="delete-form">
+<form method="POST">
+	{% csrf_token %}
+	<div class="row">
+    	{{form.non_field_errors}}
+    <div class='col s12 m10 l8 offset-l2 offset-m1'>
+       <div class="card">
+        <div class="card-content black-text">
+          <div class="row center">
+        	<span class="card-title"><b>Delete Request</b></span>
+        <h6>Moving? Found a duplicate? Let us know which vendor or event we should delete.</h6>
+        </div>
+
+
+	<div class="row">
+            <div class="input-field col s12 l6">
+              <i class="mdi-communication-email prefix"></i>
+              <input id="id_email" class="validate" name="email" value="" type="text">
+              <label for="id_email">Enter your email address*</label>
+                {{form.email.errors}}
+              </div>
+              <div class="input-field col s12 l6">
+                <i class="mdi-maps-local-shipping prefix"></i>
+              <input id="id_truck" class="validate" name="truck" value="" type="text">
+              <label for="id_truck">Which truck(s) or event(s)?*</label>
+              {{form.truck.errors}}
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m10 l6">
+              <i class="mdi-communication-message prefix"></i>
+              <textarea id="id_reason" class="materialize-textarea" value="" name="reason"></textarea>
+              <label for="id_reason">Reason?*</label>
+                {{form.reason.errors}}
+              </div>
+          </div>
+          <div class="card-action">
+                <div class="right">
+          <button class='btn waves-effect waves-light' type="submit">Submit Request</button>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+</form>
+</div>
+</div>
+
+
+
+
+
+
+{% endblock %}

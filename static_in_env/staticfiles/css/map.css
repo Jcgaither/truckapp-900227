@@ -1,0 +1,47 @@
+html,body { margin:0; padding:0;}
+
+#map { position:absolute;top:67;bottom:0;left:0; right:0;width:100%;}
+nav ul a{
+  color:white;
+
+}
+.custom-popup .leaflet-popup-content-wrapper {
+background:white;
+
+line-height:24px;
+}
+.custom-popup .leaflet-popup-tip-container {
+
+}
+.custom-popup .leaflet-popup-tip {
+
+}
+nav .brand-logo{color:white; margin-left:1%;}
+
+
+#map p{
+}
+.leaflet-popup-content a{
+color:#00897b;
+font-family: "Roboto";
+
+}
+.leaflet-popup-content {
+
+}
+
+.leaflet-popup-content img{
+margin-bottom:5%;
+max-height:600px;
+}
+
+.button-collapse{
+color:black;
+}
+.brand-logo{
+margin-top:15px;
+}
+
+nav .button-collapse i {
+color:#fff;
+}

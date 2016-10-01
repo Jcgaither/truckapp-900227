@@ -1,0 +1,32 @@
+body{
+  background-color:#edefed;
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.wrapper {
+
+  height:100%;
+  margin-top:4%;
+
+  overflow: auto;
+
+}
+
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+
+.wrapper p, h4{
+    color:#565a5c;
+}
+.wrapper .container{
+    max-width:65em;
+}
+
+.card-content{
+  color:#565a5c;
+}

@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>{{object.plus_truck_name}} | WheelDine</title>
+<link rel="stylesheet" href="{% static "css/update.css" %}">
+{% endblock %}
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row center">
+	<div class="col s12 m12 l8 offset-l2">
+<a href="{% url 'plus_truck_detail' object.slug %}"><h5>Update {{object.plus_truck_name}}</h5></a>
+</div>
+<div class="tab-wrapper">
+<div class="row">
+    <div class="col s12 m10 l8 offset-l2 offset-m1">
+    	<div class="card white">
+    		<div class="card-content black-text">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#location">Location</a></li>
+        <li class="tab col s3"><a href="#information">information</a></li>
+        <li class="tab col s3"><a href="#status">Status</a></li>
+      </ul>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="content-wrapper">
+        	 <form method='POST' action='' enctype='multipart/form-data'>
+          {% csrf_token %}
+          {{form.non_field_errors}}
+
+    <div id="location" class="col s12">
+  <div class="row">
+    <div class='col s12 l8 m10 offset-l2 offset-m1'>
+       <div class="card white">
+        <div class="card-content black-text">
+        	<span class="card-title">Location</span>
+
+    	<div class="row">
+    		{{form.non_field_errors}}
+            <div class="input-field col s12 l12">
+              <i class="mdi-communication-business prefix"></i>
+
+              <input id="plus_id_address" class="validate" name="plus_address" maxlength="500" value="{{object.plus_address}}" type="text">
+              <label for="plus_id_address">Address</label>
+               {{form.plus_address.errors}}
+
+              </div>
+            </div>
+            <div class="row">
+            <div class="input-field col s12 l6">
+              <i class="mdi-social-location-city prefix"></i>
+              <input id="id_plus_city" class="validate" name="plus_city" value="{{object.plus_city}}" type="text">
+              <label for="id_plus_city">City</label>
+                {{form.plus_city.errors}}
+              </div>
+              <div class="col s12 l6">
+              <select id="id_plus_state" name="plus_state" class="browser-default">
+                <option value="{{object.plus_state}}">{{object.plus_state}}</option>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AS">American Samoa</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="AA">Armed Forces Americas</option>
+                <option value="AE">Armed Forces Europe</option>
+                <option value="AP">Armed Forces Pacific</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="GU">Guam</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="MP">Northern Mariana Islands</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="PR">Puerto Rico</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VI">Virgin Islands</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+              </select>
+
+              <label for="id_plus_state"></label>
+              {{form.plus_state.errors}}
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m10 l6">
+              <i class="mdi-maps-place prefix"></i>
+              <input id="id_plus_postal_code" class="validate" name="plus_postal_code" value="{{object.plus_postal_code}}" type="text">
+              <label for="id_plus_postal_code">Zip Code</label>
+                {{form.plus_postal_code.errors}}
+              </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+    <div id="information" class="col s12">
+
+    <div class="row">
+    	{{form.non_field_errors}}
+    <div class='col s12 m10 l8 offset-l2 offset-m1'>
+       <div class="card white">
+        <div class="card-content black-text">
+        	<span class="card-title">Information</span>
+        	     <div class="row">
+            <div class="input-field col s12 l6">
+              <i class="mdi-maps-local-shipping prefix"></i>
+              <input id="id_plus_truck_name" class="validate" name="plus_truck_name" value="{{object.plus_truck_name}}" type="text">
+              <label for="id_plus_truck_name">Truck name</label>
+                {{form.plus_truck_name.errors}}
+              </div>
+              <div class="input-field col s12 l6">
+                <i class="mdi-communication-email prefix"></i>
+              <input id="id_plus_email" class="validate" name="plus_email" value="{{object.plus_email}}" type="text">
+              <label for="id_plus_email">E-mail</label>
+              {{form.plus_email.errors}}
+          </div>
+      </div>
+          <div class="row">
+            <div class="input-field col s12 m10 l12">
+              <i class="mdi-action-description
+ prefix"></i>
+              <input id="id_plus_description" class="validate" name="plus_description" value="{{object.plus_description}}" type="text">
+              <label for="id_description">Description</label>
+                {{form.plus_description.errors}}
+              </div>
+          </div>
+
+              <div class="row">
+            <div class="input-field col s12 m10 l6">
+              <i class="mdi-maps-restaurant-menu
+ prefix"></i>
+              <textarea id="id_plus_menu" class="materialize-textarea" value="{{object.plus_menu}}" name="plus_menu">{{object.plus_menu}}</textarea>
+              <label for="id_plus_menu">Menu (Plain text)</label>
+                {{form.plus_menu.errors}}
+              </div>
+
+              <div class="input-field col m10 s12 l6">
+                <i class="mdi-maps-local-pizza prefix"></i>
+              <input id="id_plus_food_type" class="validate" name="plus_food_type" value="{{object.plus_food_type}}" type="text">
+              <label for="id_plus_food_type">Food Type</label>
+              {{form.plus_food_type.errors}}
+          </div>
+              </div>
+            <div class="row">
+              <div class="input-field col s6 m10 l3">
+                <i class="mdi-action-alarm-on prefix"></i>
+                <input id="id_open_time" class="validate" name="open_time" value="{{object.open_time}}" type="text">
+                  <label for="id_open_time">Open Time (ex 8:00 am)</label>
+									{{form.open_time.errors}}
+                </div>
+                <div class="input-field col s6 m10 l3">
+                  <input id="id_close_time" class="validate" name="close_time" value="{{object.close_time}}" type="text">
+                  <label for="id_close_time">Close Time (7:00 pm)</label>
+
+                  {{form.close_time.errors}}
+                  </div>
+                  </div>
+
+              <div class="row">
+          <div class="file-field input-field col s12 m10 l5">
+                <div class="waves-light btn">
+                  <span>Menu Photo</span>
+                <input id="id_menu_photo" class="validate" name="plus_menu_photo" type="file">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" value="{{object.plus_menu_photo}}" type="text">
+              </div>
+          </div>
+                <label for="id_plus_menu_photo"></label>
+                {{form.plus_menu_photo.errors}}
+                <div class="file-field input-field col s12 m10 l5">
+                <div class="waves-light btn">
+                  <span>Thumbnail</span>
+                <input id="id_plus_thumbnail" class="validate" name="plus_thumbnail"  type="file">
+                <label for="id_plus_thumbnail"></label>
+               {{form.plus_thumbnail.errors}}
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" value="{{object.plus_thumbnail}}" type="text">
+
+              </div>
+          </div>
+          <label for="id_plus_thumbnail"></label>
+          {{form.plus_thumbnail.errors}}
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+    <div id="status" class="col s12">
+    	<div class="row">
+    		{{form.non_field_errors}}
+    <div class='col s12 m10 l8 offset-l2 offset-m1'>
+       <div class="card white">
+        <div class="card-content black-text">
+        	<span class="card-title">Status Update</span>
+        	<div class="row">
+            <div class="input-field col s12 l12">
+              <i class="mdi-communication-chat prefix"></i>
+              <input id="id_plus_status" class="validate" name="plus_status" value="{{object.plus_status}}" type="text">
+              <label for="id_plus_status">Status</label>
+               {{form.plus_status.errors}}
+
+              </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+  </div>
+</div>
+<div class="row center">
+	<div class="col s12 l12">
+<button class='btn waves-effect waves-light' type='submit' >Submit</button>
+</div>
+</div>
+</form>
+</div>
+
+
+
+
+
+
+
+        <!-- <form method='POST'>
+  {% csrf_token %}
+{{form}}
+<button type='submit' class='btn btn-info'>Submit</button>
+</form> -->
+
+
+
+{% endblock %}

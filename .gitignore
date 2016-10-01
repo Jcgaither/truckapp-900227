@@ -1,0 +1,11 @@
+
+bin/
+lib/
+*.pyc
+__pycache__
+myvenv
+db.sqlite3
+.DS_Store
+src/truckapp/settings/local.py
+src/truckapp/settings/base.py
+

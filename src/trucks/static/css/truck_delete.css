@@ -1,0 +1,19 @@
+body{
+  background-color:#edefed;
+}
+h4{
+  color:#565a5c;
+}
+
+.header-info{
+	margin-top:4%;
+
+}
+
+.content-wrapper{
+  margin-top:5%;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}

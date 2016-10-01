@@ -1,0 +1,98 @@
+{% extends "djstripe/base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<title>Cancel Subscription | WheelDine</title>
+<script src="{% static "js/jquery.min.js" %}"></script>
+{% endblock %}
+{% block style %}
+<style>
+body{
+  color:#ECF0F1;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+.content{
+    margin-top:4%;
+}
+.nav-wrapper a{
+  text-shadow: 1px 1px 1px #000;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+ <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+     {% if user.is_authenticated %}
+    <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+            <ul id="nav-mobile" class="side-nav">
+            {% if user.is_authenticated %}
+    <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+<div class="content">
+<div class="row">
+    <div class="col s12 m8 l8 offset-l3 offset-m2">
+        <h2>Cancel Subscription</h2>
+        {% if not customer.current_subscription %}
+            <p>You have no subscription on file.</p>
+            <p>See your <a href="{% url 'djstripe:account' %}">account status</a> or better yet, <a href="{% url 'djstripe:subscribe' %}">subscribe</a>.</p>
+        {% elif customer.current_subscription.status == customer.current_subscription.STATUS_CANCELLED %}
+            <p>Your subscription has already been canceled.</p>
+            <p>See your <a href="{% url 'djstripe:account' %}">account status</a> or better yet, get a <a href="{% url 'djstripe:subscribe' %}">new subscription</a>.</p>
+        {% elif customer.current_subscription.is_status_temporarily_current %}
+            <p>Your subscription has already been canceled.</p>
+            <p>However, you can still use the site for another {{ customer.current_subscription.current_period_end|timeuntil }}.</p>
+        {% else %}
+            {% block cancellation_ramifications %}
+            <h4>What you lose by cancelling your subscription:</h4>
+            <div class="divider"></div>
+            <ul>
+              <li>- Ability to create PlusTrucks</li>
+              <li>- Ability to edit your PlusTruck</li>
+              <li>- Ability to view feedback for your PlusTruck</li>
+              <li><i>*PlusTrucks without an active subscription will be deleted after 30 days</i></li>
+            </ul>
+            {% endblock cancellation_ramifications %}
+
+            <h4>Are you sure you want to cancel?</h4>
+            <form action="{% url 'djstripe:cancel_subscription' %}" method="post" id="cancel-form">
+                {% csrf_token %}
+                <a href="{% url 'djstripe:account' %}" class="btn btn-primary">I change my mind</a>
+                <button class="btn waves-effect waves-light red lighten-1">Cancel my subscription</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock content %}

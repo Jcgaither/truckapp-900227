@@ -1,0 +1,283 @@
+
+/*body{
+  background-color:#edefed;
+}
+
+*/
+#wrapper{
+  background: url('/static/img/Lander.png') no-repeat center center;
+  min-height:46em;
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+
+
+
+}
+.ui.secondary.inverted.pointing.menu {
+  padding-top:10px;
+  border-width:0px !important;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+
+.ui.menu {
+  min-height:4em;
+}
+
+.flow-text{
+  color:#565a5c
+}
+
+#map { position:absolute; top:0; bottom:0; left:0; width:60%; height:100%;}
+
+
+.section-no-pad-bot{
+  padding-bottom:0px;
+}
+
+#wrapper h1{
+
+  text-shadow: 2px 2px 4px #000000;
+
+}
+#wrapper h1{
+  padding-left:35px;
+  text-shadow: 2px 2px 4px #000000;
+}
+
+#bottom-wrapper h4,p{
+
+  color:#565a5c;
+
+
+}
+.ui.input{
+  width:45%;
+
+}
+.myButton {
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  border-radius:2px;
+  border:1px solid #ffffff;
+  cursor:pointer;
+  color:white;
+  font-size:14px;
+  padding: 12px 15px;
+  text-decoration:none;
+  text-shadow:0px 0px 0px #2f6627;
+  white-space: nowrap;
+
+}
+.navbutton {
+  background-color:transparent;
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  border-radius:2px;
+  border:1px solid #ffffff;
+  cursor:pointer;
+  text-decoration:none;
+  text-shadow: 2px 2px 4px #000000;
+}
+.navbutton:hover {
+  background-color:transparent;
+}
+.navbutton:active {
+  position:relative;
+  top:1px;
+}
+nav ul li a{
+  color: white;
+  text-shadow: 1px 1px 1px #000;
+}
+nav .nav-wrapper {
+  box-shadow:0px;
+}
+
+#cities a{
+  color:#4db6ac;
+}
+#cities a:hover{
+  color:#ff7043;
+}
+
+nav{
+  box-shadow: none;
+}
+
+.nav-wrapper .container-fluid{
+  box-shadow:none;
+
+}
+
+.myButton:hover {
+  background-color:#fce38a;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+
+#inner-wrap{
+	text-align:center;
+	margin-top:5em;
+}
+#inner-wrap h3{
+  color:white;
+  text-shadow: 1px 1px 1px #000;
+}
+
+#inner-form{
+
+
+}
+#inner-form h5{
+  color:white;
+  text-align:center;
+}
+#inner-form .btn{
+ margin-left:85px;
+}
+#danger{
+	background-color: #FCE38A;
+	border: 1px solid #ff5a5f;
+	text-shadow: none;
+
+}
+.mapimg{
+  margin-top:25px;
+}
+#danger:hover{
+	 background-color: #E55155;
+}
+
+
+
+#recent {
+	background-color:#e1e1e1;
+}
+
+#search_content{
+  margin-top:10%;
+}
+.search-box{
+  width: 100%;
+    height: 65px;
+    background: #cecfd5;
+    opacity: 0.5;
+}
+.truck-info h5{
+  white-space: nowrap;
+}
+
+.page a{
+  color:black;
+}
+.page h4{
+  color:black;
+}
+.page p{
+  color:black;
+}
+
+.footer li{
+  display:inline-block;
+}
+.footer a{
+  color:#a5a5a5;
+}
+.input-group{
+   border-bottom: white;
+   border-radius:2px;
+}
+
+
+#work {
+  white-space: nowrap;
+  background-color:#edefed;
+
+
+}
+
+#work .container{
+  width:90%;
+}
+
+#work h4,p {
+  color:#565a5c;
+}
+
+
+.search {width: 100%;height: 39px;background:transparent;background:transparent;background: rgba(0,0,0,.2); margin-top:1%;box-shadow:1px 1px 4px #000000;}
+
+.search input {width: 80%;height:100%;padding: 10px 5px;float: left;color:black;border: 0;background: white;border-radius: 3px 0 0 2px;}
+
+.search input:focus {outline: 0;background:white;}
+
+.search button {font-family: 'Roboto', sans-serif;position: relative;float: right;border: 0;padding:;cursor: pointer;height:100%;width: 20%;color: white;background: #009688 ;border-left: 1px solid #fff;border-radius: 0 2px 2px 0;}
+
+.search button:hover {background:#00695c;color:white;}
+.search button:active {box-shadow: 0px 0px 12px 0px rgba(225, 225, 225, 1);}
+
+.search button:focus {outline: 0;}
+
+#sign-up{
+  background-color:#fff;
+}
+#sign-up h4{
+  color:#565a5c;
+
+}
+
+#map-content{
+  background-color:#edefed;
+  height:30em;
+}
+#map-content h3{
+  color:#565a5c;
+}
+
+#actual-map .card-content{
+  float:left;
+  height:100%;
+  width:60%;
+}
+
+#map-content .card{
+  height:310px;
+  margin-top:3em;
+
+}
+
+.right-content {
+  width: 40%;
+  float:left;
+  padding-left:15px;
+}
+.right-content h4{
+  color:#565a5c;
+}
+
+#map-content .container{
+  width:65em;
+}
+
+#or h5{
+  color:white;
+  text-shadow: 1px 1px 4px #000000;
+
+}
+#add_button{
+  margin-top:7px;
+}
+
+@media only screen and (max-width : 610px) {
+      #map {
+        width:100%;
+      }
+    }

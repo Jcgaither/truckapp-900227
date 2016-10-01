@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block head %}
+
+<title>{{object.plus_truck_name}} | WheelDine</title>
+<link rel="stylesheet" href="{% static "css/feedback_detail.css" %}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+{% endblock %}
+{% block style %}
+{% endblock %}
+{% block content %}
+    <div class="content-wrapper">
+    <div class="navbar">
+    <nav class="transparent">
+      <div class="nav-wrapper container-fluid">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'select_form' %}">Add a Foodtruck</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'select_form' %}">Add a Foodtruck</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+  </ul>
+</ul>
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
+              <ul id="nav-mobile" class="side-nav">
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+
+
+
+<div class="row">
+    <div class="col s12 m10 l8 offset-l2 offset-m1">
+    	<div class="card white">
+    		<div class="card-content black-text">
+		 <ul class="tabs">
+			 <li class="tab col s3"><a href="#positive">Positive</a></li>
+			 <li class="tab col s3"><a href="#negative">Negative</a></li>
+			 <li class="tab col s3"><a href="#suggestions">Suggestions</a></li>
+		 </ul>
+	 </div>
+ </div>
+ </div>
+ </div>
+
+	 <div id="positive" class="col s12">
+		 <div class="row">
+		 <div class='col s12 l8 m10 offset-l2 offset-m1'>
+	 <div class="card white">
+		<div class="card-content black-text">
+			<div class="row center">
+			<span class="card-title">Positive Feedback for {{object.plus_truck_name}}</span>
+		</div>
+	<div class="row">
+	{% for feedback in plustruck.feedback_set.all %}
+	{% if feedback.positive %}
+	<p><b>{{feedback.user}}</b> <small>[{{feedback.timestamp|date:'M, d Y P'}}]</small> - {{feedback.positive}}</p>
+	<br>
+	<div class="divider"></div>
+	<br>
+	{% else %}
+	{% endif %}
+	{% endfor %}
+	</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+	 <div id="negative" class="col s12">
+		 <div class="row">
+		<div class='col s12 l8 m10 offset-l2 offset-m1'>
+		 <div class="card white">
+			<div class="card-content black-text">
+				<div class="row center">
+				<span class="card-title">Negative Feedback for {{object.plus_truck_name}}</span>
+			</div>
+		<div class="row">
+		{% for feedback in plustruck.feedback_set.all %}
+		{% if feedback.negative %}
+		<p><b>{{feedback.user}}</b> <small>[{{feedback.timestamp|date:'M, d Y P'}}]</small> - {{feedback.negative}}</p>
+		<br>
+		<div class="divider"></div>
+		<br>
+		{% else %}
+		{% endif %}
+		{% endfor %}
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+</div>
+
+	 <div id="suggestions" class="col s12">
+		 <div class="row">
+	 <div class='col s12 l8 m10 offset-l2 offset-m1'>
+		 <div class="card white">
+ 		 <div class="card-content black-text">
+			 <div class="row center">
+ 			 <span class="card-title">Suggestions for {{object.plus_truck_name}}</span>
+		 </div>
+ 	 <div class="row">
+ 	 {% for feedback in plustruck.feedback_set.all %}
+	 {% if feedback.suggestions %}
+ 	 <p><b>{{feedback.user}}</b> <small>[{{feedback.timestamp|date:'M, d Y P'}}]</small> - {{feedback.suggestions}}</p>
+	 <br>
+	 <div class="divider"></div>
+	 <br>
+	 {% else %}
+	 {% endif %}
+ 	 {% endfor %}
+ 	 </div>
+  </div>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

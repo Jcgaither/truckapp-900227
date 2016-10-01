@@ -1,0 +1,10 @@
+{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}
+
+Just one more step {{ user_display }}!
+
+Confirm your WheelDine account activation by going to:
+{{ activate_url }}
+{% endautoescape %}
+
+Thank you from WheelDine!
+www.wheeldine.com

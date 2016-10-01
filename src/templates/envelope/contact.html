@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load envelope_tags %}
+{% block head %}
+<title>Contact| WheelDine</title>
+{% endblock %}
+
+{% block style %}
+
+
+
+<style>
+
+body{
+  background-color:#edefed;
+}
+
+.header-info{
+	margin-top:4%;
+
+}
+
+
+.form-group{
+	color:black;
+}
+.content-wrapper{
+  margin-top:4%;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="navbar">
+    <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+  {% if user.is_authenticated %}
+    <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+
+  {% if user.is_authenticated %}
+    <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+
+
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="content-wrapper">
+<div class="row">
+	<div class='col s12 m10 l6 offset-l3 offset-m1'>
+<div class="card">
+        <div class="card-content">
+        	<div class="row center">
+        <span class="card-title"><b>Contact Us</b></span>
+        <p>Send us a message here or e-mail us at <a href="mailto:hello@wheeldine.com">hello@wheeldine.com</a>. We'll get back to you as soon as we can.</p>
+    </div>
+<form action="/contact/" method="post">
+{% csrf_token %}
+  {{form.non_field_errors}}
+
+          <div class="row">
+            <div class="input-field col s12 m12 l12">
+              <i class="mdi-social-person prefix"></i>
+              <input id="id_sender" class="validate" name="sender" type="text">
+              <label for="id_sender">Name</label>
+                {{form.truck_name.errors}}
+              </div>
+            <div class="input-field col s12 l12">
+              <i class="mdi-communication-email prefix"></i>
+              <input id="id_email" class="validate" name="email" type="text">
+              <label for="id_email">E-mail*</label>
+               {{form.email.errors}}
+
+              </div>
+
+            <div class="input-field col s12 l12">
+              <i class="mdi-action-subject prefix"></i>
+              <input id="id_subject" class="validate" name="subject" type="text">
+              <label for="id_subject">Subject</label>
+               {{form.subject.errors}}
+
+              </div>
+
+            <div class="input-field col s12 l12">
+              <i class="mdi-communication-message prefix"></i>
+              <textarea id="id_message" class="materialize-textarea" name="message"></textarea>
+              <label for="id_message">Message*</label>
+               {{form.message.errors}}
+
+              </div>
+              </div>
+              <div class="card-action">
+                <div class="right">
+               <button class='btn waves-effect waves-light' type='submit' >Submit</button>
+             </div>
+           </div>
+
+    </div>
+
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}

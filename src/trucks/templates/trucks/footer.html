@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style>
+footer.page-footer{
+  background-color:#252833;
+  margin-top:0px !important;
+  padding-top:0px !important;
+}
+footer.page-footer .footer-copyright {
+  background-color:#1d1f28;
+}
+
+footer a{
+  text-shadow: 1px 1px 1px #000;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<footer class="page-footer">
+          <div class="container" id="foot">
+            <div class="row">
+              <div class="col l6 s12">
+                <img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="25" alt="WheelDine">
+                <p class="grey-text text-lighten-4">Connecting WheelDiners <span style="color:#ff5252">&amp</span> their favorite Foodtrucks</p>
+                  <p class="grey-text text-lighten-4">~Happy {% now "l" %}!</span></p>
+                <img src='/static/img/facebook-box.png' data-tooltip="Coming soon!" data-delay="10" data-position="top" class="collection-item tooltipped">
+                <img src='/static/img/instagram.png' data-tooltip="Send us your photos at hello@wheeldine.com" data-delay="10" data-position="top" class="collection-item tooltipped">
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  {% if request.user.is_authenticated %}
+                  <li><a class="grey-text text-lighten-3" href="{% url 'djstripe:account' %}">My Account</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'delete_trucks' %}">Delete Request</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'pricing' %}">Pricing</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'envelope-contact' %}">Contact Us</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'about' %}">About WheelDine</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'tos' %}">Terms of Service</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+
+                  {% else %}
+                  <li><a class="grey-text text-lighten-3" href="{% url 'delete_trucks' %}">Delete Request</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'pricing' %}">Pricing</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'envelope-contact' %}">Contact Us</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'about' %}">About WheelDine</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'tos' %}">Terms of Service</a></li>
+                  <li><a class="grey-text text-lighten-3" href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                  {% endif %}
+                
+
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container" id="copyright">
+            © 2016 WheelDine
+            <a class="grey-text text-lighten-4 right" href=""></a>
+            </div>
+          </div>
+        </footer>
+  {% endblock %}

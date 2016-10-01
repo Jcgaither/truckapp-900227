@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+<meta charset=utf-8 />
+<title>Map | WheelDine</title>
+<link rel="stylesheet" href="{% static "css/map.css" %}">
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+
+{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.mapbox.css' rel='stylesheet' />
+<!--[if lt IE 9]>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.ie.css' rel='stylesheet' />
+<![endif]-->
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/css/font-awesome.min.css' rel='stylesheet' />
+
+<div class="nav">
+    <nav class="blue-grey darken-4">
+      <div class="nav-wrapper container-fluid">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'select_form' %}">Add</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'select_form' %}">Add</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}"><span style="border: 2px solid white; border-radius:2px;padding: 10px 13px;">Create an account</span></a></li></li>
+  {% endif %}
+
+
+        </ul>
+
+</div>
+
+        </nav>
+      </div>
+<div class="container">
+<div id='map'></div>
+</div>
+
+
+
+<!-- <input id='search' class='search-ui' placeholder='Enter state code' /> -->
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiamNnYWl0aGVyIiwiYSI6ImNpa2l4cjlsZjA1Yjh0bm02aGpqcDIzdDMifQ.cxb-nD-EoNJxtSIYU5hg9A';
+var map = L.mapbox.map('map')
+    .setView([40.88, -97.011], 4)
+    .addLayer(L.mapbox.tileLayer('mapbox.streets'));
+L.control.locate().addTo(map);
+
+
+
+ var EventJsonLayer = L.mapbox.featureLayer()
+    .loadURL('{% url "event_data" %}')
+    .on('ready', function(e) {
+
+
+
+      e.target.eachLayer(function(layer) {
+
+        if(layer.feature.properties.event_thumbnail){
+
+      var eventContent = '<img src="' + layer.feature.properties.event_thumbnail + '" width="250">' + '<a class="popup" href="http://www.wheeldine.com/event/' + layer.feature.properties.slug + '">' +'<p>' + layer.feature.properties.event_name + '</a>' + '<br>' + layer.feature.properties.event_address + " " + layer.feature.properties.event_city + ", " + layer.feature.properties.event_state + '</p>';
+      layer.bindPopup(eventContent);
+      layer.setIcon(L.mapbox.marker.icon({
+        "marker-color":'#ff7043',
+        "marker-symbol": "embassy",
+        "marker-size": 'large',
+      }));
+    }
+      else{
+        var eventContent = "<img src='/static/img/event_flag.png' width='250'>" + '<a class="popup" href="http://www.wheeldine.com/event/' + layer.feature.properties.slug + '">' +'<p>' + layer.feature.properties.event_name + '</a>' + '<br>' + layer.feature.properties.event_address + " " + layer.feature.properties.event_city + ", " + layer.feature.properties.event_state + '</p>';
+        layer.bindPopup(eventContent);
+        layer.setIcon(L.mapbox.marker.icon({
+          "marker-color":'#ff7043',
+          "marker-symbol": "embassy",
+          "marker-size": 'large',
+        }));
+
+      }
+
+    });
+
+ var BaseJsonLayer = L.mapbox.featureLayer()
+    .loadURL('{% url "base_data" %}')
+    .on('ready', function(e) {
+
+
+      e.target.eachLayer(function(layer) {
+      var baseContent = "<img src='/static/img/basetruck.png' width='250'>" + '<p>' + layer.feature.properties.base_truck_name + '<br>' + layer.feature.properties.base_address + " " + layer.feature.properties.base_city + ", " + layer.feature.properties.base_state + '</p>';
+      layer.bindPopup(baseContent);
+      layer.setIcon(L.mapbox.marker.icon({
+        "marker-color":'#00897b',
+        "marker-symbol": "bus",
+      }));
+
+    });
+
+});
+
+
+var PremiumJsonLayer = L.mapbox.featureLayer()
+    .loadURL('{% url "premium_data" %}')
+    .on('ready', function(e) {
+
+
+      var clusterGroup = new L.MarkerClusterGroup();
+    e.target.eachLayer(function(layer) {
+
+      if (layer.feature.properties.plus_thumbnail){
+
+
+      var premiumContent = '<img src="' + layer.feature.properties.plus_thumbnail + '" width="250">' + '<a class="popup" href="http://www.wheeldine.com/' + layer.feature.properties.slug + '">' +'<p>' + layer.feature.properties.plus_truck_name + '</a>' + "<br>" + layer.feature.properties.plus_address + " " + layer.feature.properties.plus_city + ", " + layer.feature.properties.plus_state + '</p>';
+      layer.bindPopup(premiumContent);
+      layer.setIcon(L.mapbox.marker.icon({
+        "marker-color":'#ff8888',
+        'marker-symbol': 'bus',
+        "marker-size": 'large',
+      }));
+    }
+    else{
+      var premiumContent = "<img src='/static/img/plustruck.png' width='250'>" + '<a class="popup" href="http://www.wheeldine.com/' + layer.feature.properties.slug + '">' +'<p>' + layer.feature.properties.plus_truck_name + '</a>' + "<br>" + layer.feature.properties.plus_address + " " + layer.feature.properties.plus_city + ", " + layer.feature.properties.plus_state + '</p>';
+      layer.bindPopup(premiumContent);
+      layer.setIcon(L.mapbox.marker.icon({
+        "marker-color":'#ff8888',
+        'marker-symbol': 'bus',
+        "marker-size": 'large',
+      }));
+    }
+
+
+        clusterGroup.addLayer(PremiumJsonLayer);
+        clusterGroup.addLayer(BaseJsonLayer);
+        clusterGroup.addLayer(EventJsonLayer);
+
+    });
+
+    map.addLayer(clusterGroup);
+
+
+});
+});
+
+</script>
+{% endblock %}

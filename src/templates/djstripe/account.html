@@ -1,0 +1,250 @@
+{% extends "djstripe/base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<title>Account Dashboard| WheelDine</title>
+<script src="{% static "js/jquery.min.js" %}"></script>
+{% endblock %}
+{% block style %}
+<style>
+body{
+  background-color:#ECF0F1;
+}
+
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+
+}
+.breadcrumb{
+  color:black;
+}
+@media only screen and (max-width : 992px) {
+      .wrapper {
+        padding-left: 0 !important;
+      }
+    }
+  .wrapper{
+      padding-left: 7em;
+    }
+.navbar a{
+  text-shadow: 1px 1px 1px #000;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Nav Bar -->
+<div class="wrapper">
+  <div class="navbar">
+  <nav class="blue-grey darken-4">
+    <div class="hide-on-large-only">
+    <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+      </div>
+   <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+     {% if user.is_authenticated %}
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+
+
+      </div>
+    </nav>
+    <ul id="nav-mobile" class="side-nav">
+            {% if user.is_authenticated %}
+    <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Change Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+    <ul id="slide-out" class="side-nav fixed">
+   <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+
+    <li><a href="#!">Welcome {{request.user}}</a></li>
+    <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Change Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+      <!-- <li><a href="#!">Reviews</a></li> -->
+
+    </ul>
+
+
+{{ block.super }}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+
+            <h5><u>Account Information</u></h5>
+            {% if subscription.is_status_current and not subscription.is_status_temporarily_current %}
+                <p>Next billed on {{ subscription.current_period_end|date }}.</p>
+                <p>You can <a href="{% url 'djstripe:subscribe' %}">change</a> your plan
+                or <a href="{% url 'djstripe:cancel_subscription' %}">cancel</a> your subscription.
+                </p>
+            {% else %}
+                <h5><a style="color:#ef5350;" href="{% url 'djstripe:subscribe' %}">Subscribe</a><h5>
+            {% endif %} <h6><a href="{% url 'djstripe:history' %}">Check Payment History</a></h6>
+
+        </div>
+    </div>
+    <div class="row">
+        {% if customer.has_valid_card %}
+            <div class="col l4">
+                <p><u>Credit Card on file</u><br>
+                    <a class="modal-trigger" href="#show-card">Show Card</a> | <a href="{% url 'djstripe:change_card' %}">Change Card</a>
+                </p>
+            </div>
+        {% else %}
+            <div class="col s12" style="margin-bottom:10px;">
+                <p>
+                    <a class="waves-effect waves-light btn" href="{% url 'djstripe:change_card' %}">Add Card</a>
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+
+    {% if plans %}
+        {# Show available plans #}
+        <div class="row">
+            <div class="col s12">
+                <h5>Subscription</h5>
+                {% include "djstripe/includes/_subscription_status.html" %}
+            </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+        <div class="row">
+            <div class="col s12">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Interval</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for plan in plans %}
+                        <tr> {% if plan.plan == subscription.plan %}
+                            {% if subscription.is_status_current and not subscription.is_status_temporarily_current and subscription.status != subscription.STATUS_TRIALING %}
+                                * Subscription Active
+                            {% elif subscription.is_status_temporarily_current or subscription.status == subscription.STATUS_TRIALING %}
+                                * Temporary Subscription
+                            {% endif %}
+                        {% endif %}
+                            <td>{{ plan.name }}</td>
+                            <td>{{ plan.interval.title }}ly</td>
+                            <td>{{ plan.description }}</td>
+                            <td>
+                                {% if plan.plan == subscription.plan and subscription.status != subscription.STATUS_CANCELLED %}
+                                    <strong>Your plan</strong>
+                                {% else %}
+                                    Not your plan
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        {# No plans so just show payment history #}
+        {% include "djstripe/includes/_history_table.html" %}
+    {% endif %}
+</div>
+</div>
+</div>
+</div>
+
+
+  <!-- Modal for showing card -->
+  <div class="modal" id="show-card">
+      <div class="modal-content">
+          <h4>Card on File</h4>
+            <p><strong>Type:</strong> {{ customer.card_kind }}</p>
+            <p><strong>Last 4 Digits:</strong> {{ customer.card_last_4 }}</p>
+            <p><small>For security, your card information is stored on <a href="https://stripe.com">stripe.com</a>.</small></p>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</button>
+      </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+<script>
+$(document).ready(function() {
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  $('.modal-trigger').leanModal();
+});
+</script>
+{% endblock content %}
+
+{% block javascript %}
+
+
+{{ block.super }}
+{% if plans %}
+    <script>
+        $(function() {
+            $.post("{% url 'djstripe:sync_history' %}", function(data) {
+                $('#history-table').html(data);
+            });
+        });
+    </script>
+{% else %}
+    <script>
+        $(function() {
+            $.post("{% url 'djstripe:sync_history' %}", function(data) {
+                $('#history-table').html(data);
+                $('.in-progress-gif').hide();
+            });
+        });
+    </script>
+{% endif %}
+{% endblock javascript %}

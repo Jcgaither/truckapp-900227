@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% load activity_tags %}
+
+{% block head %}
+<title>{{object.plus_truck_name}} | WheelDine</title>
+<link rel="stylesheet" href="/static/css/plus_truck_detail.css/">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+{% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+    <div class="navbar">
+    <nav class="transparent">
+      <div class="nav-wrapper container-fluid">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'select_form' %}">Add a Foodtruck</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'select_form' %}">Add a Foodtruck</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+</ul>
+</ul>
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+  </div>
+              <ul id="nav-mobile" class="side-nav">
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</span></a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+<div class="container">
+<div class="row">
+<div class="content">
+        <div class="col s12 m4 l4">
+          <div class="card">
+          	<div class="card-image">
+          		<img src="{{ object.truck_image_url }}" class="responsive-img">
+          	</div>
+            <div class="card-content">
+            	<p><i class="mdi-action-wallet-travel"></i><b> Owner:</b> {{object.owner}}</p>
+              {% if object.plus_email %}
+            	<p><i class="mdi-communication-email"></i><b> E-mail:</b> {{ object.plus_email }}</p>
+              {% else %}
+              {% endif %}
+              {% if object.open_time or object.close_time %}
+            	<p><i class="mdi-av-timer"></i><b> Hours: </b>{{object.open_time}} - {{object.close_time}}</p>
+              {% else %}
+              {% endif %}
+            </div>
+            </div>
+            <div class="card">
+                  <div class="card-content black-text center-align">
+
+                    {% if visitors %}
+                    <p class="card-title"><i class="mdi-social-group-add"></i> {{visitors|length}} </p>
+                    {% else %}
+                    <p class="card-title"><i class="mdi-social-group-add"></i> 0 </p>
+                    {% endif %}
+                    <p>Visitors</p>
+                  </div>
+                </div>
+
+            <div class="card" id="help">
+            <div class="card-content">
+              <div id='map'></div>
+            </div>
+            </div>
+          </div>
+
+          <div class="col s12 m8 l8">
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title"><b>{{ object.plus_truck_name }}</b></span>
+              <div class="card-address">
+
+               <p>{{ object.plus_address }} {{ object.plus_city }} {{object.plus_state}}, {{object.plus_postal_code}}</p>
+          </div>
+          <br>
+              <h6><b>Description:</b></h6>
+              <p>{{ object.plus_description }}</p>
+              <br>
+              <h6><b>Food Type:</b></h6>
+               <p>{{object.plus_food_type}}</p>
+              <br>
+              <h6><b>Menu: </b></h6>
+              {% if object.plus_menu_photo %}
+              <a class="waves-effect waves-light modal-trigger" href="#menu_photo"><b>Menu image</b></a>{% endif %}
+
+              {% if object.plus_menu %}
+              <a class="waves-effect waves-light modal-trigger" href="#menu_text"><b>Text menu</b></a>{% endif %}
+
+            </div>
+            <div class="card-action">
+            {% if request.user == object.owner %}
+              <a href="{% url 'plus_truck_update' object.slug %}">Update</a>
+              <a href="{% url 'plus_truck_delete' object.slug %}">Delete</a>
+              <a href="{% url 'feedback' object.slug %}">View Feedback</a>
+              {% else %}
+              <a href="{% follow_url plustruck %}?next={{request.path}}">
+                {% if request.user|is_following:plustruck %}
+                Unvisit
+                {% else %}
+                <span style="color:#68C3A3;">I've visited</span>
+                {% endif %}
+              </a>
+              <a class="modal-trigger waves-effect modal-trigger" href="#submitfeedback">Submit Feedback</a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card grey lighten-5">
+            <div class="card-content">
+              <h6><b>Status:</b></h6>
+              <p>{{object.plus_status}}</p>
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
+        </div>
+      </div>
+    </div>
+    </div>
+{% if object.plus_menu_photo %}
+ <div id="menu_photo" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <img src="{{ object.plus_menu_photo.url }}" class="responsive-img" height="1000">
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+  {% endif %}
+  {% if object.plus_menu %}
+  <div id="menu_text" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <p>{{object.plus_menu}}</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+  {% endif %}
+
+   <!-- Submit feeback form-->
+   <div id="submitfeedback" class="modal">
+     <div class="modal-content">
+       <div class="col l12">
+
+       <form method='POST' action="{% url 'add_feedback' object.slug %}">
+          {% csrf_token %}
+          <div class="row">
+            <div class="input-field col s12 m12 l12">
+            <i class="mdi-action-thumb-up prefix"></i>
+            <textarea id="id_positive" name="positive" class="materialize-textarea" value=""></textarea>
+      <label for="id_positive">Positive feedback?</label>
+    </div>
+  </div>
+    <div class="row">
+      <div class="input-field col s12 m12 l12">
+      <i class="mdi-action-thumb-down prefix"></i>
+      <textarea id="id_negative" class="materialize-textarea" name="negative"></textarea>
+      <label for="id_negative">Negative feedback?</label>
+    </div>
+  </div>
+    <div class="row">
+      <div class="input-field col s12 m12 l12">
+      <i class="mdi-communication-message prefix"></i>
+     <textarea id="id_suggestions" class="materialize-textarea" name="suggestions"></textarea>
+        <label for="id_suggestions">Suggestions?</label>
+      </div>
+    </div>
+     </div>
+     <div class="modal-footer">
+         <button class='btn waves-effect waves-light' type='submit' >Submit</button>
+         </form>
+     </div>
+   </div>
+
+
+
+<script>L.mapbox.accessToken = 'pk.eyJ1IjoiamNnYWl0aGVyIiwiYSI6ImNpa2l4cjlsZjA1Yjh0bm02aGpqcDIzdDMifQ.cxb-nD-EoNJxtSIYU5hg9A';
+var map = L.mapbox.map('map', 'mapbox.streets', {
+    maxZoom: 16,
+    minZoom: 13})
+    .addLayer(L.mapbox.tileLayer('mapbox.streets'));
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.scrollWheelZoom.disable();
+
+    var ObjectIDLayer = L.mapbox.featureLayer()
+    .loadURL("{% url 'ptd' object.id %}")
+    .addTo(map);
+
+    ObjectIDLayer.on('ready', function() {
+
+      map.fitBounds(ObjectIDLayer.getBounds());
+
+});
+    </script>
+
+<script>
+$(document).ready(function() {
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  $('.modal-trigger').leanModal();
+  $('.carousel').carousel();
+});
+</script>
+{% endblock %}
+{% if plustruck.plustruckimage_set.all %}
+
+  <div class="card grey lighten-5">
+    <div class="card-content" id="photos">
+      <div class="container portfolio">
+<h6>Images</h6>
+<hr>
+<div class="row">
+<div class="col s12 m12 l12 portfolio-holder">
+  {% for image in plustruck.plustruckimage_set.all %}
+  <img class="materialboxed" src="{{ image.file.url }}">
+  {% endfor %}
+
+</div>
+</div>
+</div>
+</div>
+
+
+      <!-- <img class="materialboxed" height="65" width="65" src="{{ image.file.url }}"> -->
+
+  </div>
+  {% else %}
+  {% endif %}

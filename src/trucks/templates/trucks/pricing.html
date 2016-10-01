@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+<title>Pricing | WheelDine</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78607915-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+{% endblock %}
+{% block style %}
+<style>
+#pricing-content{
+  margin-top:4.5%
+}
+
+#content{
+  margin-bottom:5%;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" id="pricing-content">
+  <div class="row center">
+    <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="35" alt="WheelDine"></a>
+  </div>
+   <div class="divider"></div>
+   <div class="row">
+      <p class="flow-text center">Pricing</p>
+     <p class="flow-text center"><a href="{% url 'djstripe:subscribe' %}">For only $14.99 a month</a></h3>
+     <p class="flow-text center">What You Get</p>
+         <ul class="center">
+       <li>- Access to create and own your PlusTruck on WheelDine</li>
+       <li>- Update your status, location and menu items</li>
+       <li>- Track visitors, review customer feedback</li>
+       <li>- Photo uploads(coming soon!)</li>
+   </ul>
+ </div>
+ <div class="divider"></div>
+   <div clas="row" id="content">
+   <p class="flow-text center">Your own managed profile page</p>
+    <img class="responsive-img materialboxed" src="/static/img/WheelDineSS1.png">
+ </div>
+  <div class="divider"></div>
+
+   <div class="row" id="content">
+   <p class="flow-text center">An easy way to update your PlusTruck</p>
+   <img class="responsive-img materialboxed" src="/static/img/WheelDineSS4.png">
+   </div>
+     <div class="divider"></div>
+
+    <div class="row center" id="content">
+ <p class="flow-text center">Feedback that is only visible to owners</p>
+ <img class="responsive-img materialboxed" src="/static/img/WheelDineSS6.png">
+ </div>
+  <div class="divider"></div>
+ <div class="row center" id="content">
+<p class="flow-text center">A dynamic map marker with your Foodtruck's location</p>
+<img class="responsive-img materialboxed" src="/static/img/WheelDineSS5.png">
+</div>
+
+<div class="divider"></div>
+
+
+<p class="flow-text center">We plan on adding some pretty cool features and
+we'd like you to be apart of it</p>
+<div class="row center">
+<a class="btn waves-effect deep-orange lighten-2" href="{% url 'djstripe:subscribe' %}">Subscribe</a>
+</div>
+
+ </div>
+
+
+
+
+{% endblock %}

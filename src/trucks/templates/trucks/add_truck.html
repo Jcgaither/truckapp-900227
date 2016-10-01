@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>Add a Foodtruck | WheelDine</title>
+<link rel="stylesheet" href="{% static "css/add_truck.css" %}">
+{% endblock %}
+{% block style %}
+{% endblock %}
+{% block content %}
+  <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="27" alt="WheelDine"></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+          <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}" class="navbutton">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+
+
+
+
+<a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+
+      </div>
+
+    </nav>
+     <ul id="nav-mobile" class="side-nav">
+
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'profile' %}">{{request.user}}</a></li>
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+  </div>
+
+<div class="content-wrapper">
+  <br>
+  <br>
+
+
+  <div class="row center">
+    <div class='col s12 m8 l6 offset-l3 offset-m2'>
+       <div class="card">
+        <div class="card-content black-text">
+        <span class="card-title"><b>Add a Foodtruck</b></span>
+        <p>Saw a vendor that caught your attention? Add it!</p>
+          <h6 id="note">*Account required</h6>
+      <form method='POST' action="{% url 'base_truck_create' %}">
+        <div class="input-field">
+          {% csrf_token %}
+          {{form.non_field_errors}}
+          <div class="row">
+            <div class="input-field col s12 l12 ">
+               <i class="mdi-maps-local-shipping prefix"></i>
+              <input id="id_base_truck_name" class="validate" name="base_truck_name" type="text">
+              <label for="id_base_truck_name">Truck name*</label>
+                {{form.base_truck_name.errors}}
+              </div>
+           <div class="row">
+            <div class="input-field col s12 l12">
+              <i class="mdi-communication-business prefix"></i>
+              <input id="id_base_address" class="validate" name="base_address" maxlength="500" type="text">
+              <label for="id_base_address">Address</label>
+               {{form.base_address.errors}}
+
+              </div>
+            </div>
+            <div class="row">
+            <div class="input-field col s12 l6">
+              <i class="mdi-social-location-city prefix"></i>
+              <input id="id_base_city" class="validate" name="base_city" type="text">
+              <label for="id_base_city">City*</label>
+                {{form.base_city.errors}}
+              </div>
+              <div class="input-field col s12 l6">
+              <select id="id_base_state" name="base_state" class="browser-default">
+                <option value="" disabled selected>State*</option>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AS">American Samoa</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="AA">Armed Forces Americas</option>
+                <option value="AE">Armed Forces Europe</option>
+                <option value="AP">Armed Forces Pacific</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="GU">Guam</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="MP">Northern Mariana Islands</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="PR">Puerto Rico</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VI">Virgin Islands</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+              </select>
+
+              <label for="id_base_state"></label>
+              {{form.base_state.errors}}
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m10 l6">
+              <i class="mdi-maps-place prefix"></i>
+              <input id="id_base_postal_code" class="validate" name="base_postal_code" type="text">
+              <label for="id_base_postal_code">Zip Code*</label>
+                {{form.base_postal_code.errors}}
+              </div>
+            <div class="input-field col s12 m10 l6">
+              <i class="mdi-maps-local-pizza prefix"></i>
+              <input id="id_base_food_type" class="validate" name="base_food_type" type="text">
+              <label for="id_base_food_type">Food Type</label>
+                {{form.base_food_type.errors}}
+              </div>
+            </div>
+          </div>
+
+
+
+          {% if user.is_authenticated %}
+          <button class='btn waves-effect waves-light' type='submit' >Submit</button>
+          {% else %}
+          <a class="waves-effect waves-light btn" href="{% url 'account_login' %}">Submit</a>
+          {% endif %}
+      </form>
+
+
+  </div>
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}

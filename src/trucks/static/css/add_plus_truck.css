@@ -1,0 +1,29 @@
+body{
+  background: url('/static/img/form-back.png') no-repeat center center;
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+.content-wrapper{
+  margin-top:3%;
+}
+li a{
+  color:white;
+
+
+}
+#note{
+  color:#a5a5a5;
+
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+
+nav ul li a{
+  color: white;
+  text-shadow: 1px 1px 1px #000;
+}

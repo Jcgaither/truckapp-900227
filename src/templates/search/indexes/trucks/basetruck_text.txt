@@ -1,0 +1,5 @@
+{{ object.base_truck_name }}
+{{ object.base_address }}
+{{ object.base_state }}
+{{ object.base_city }}
+{{ object.base_postal_code }}

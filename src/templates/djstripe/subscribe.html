@@ -1,0 +1,195 @@
+{% extends "djstripe/base.html" %}
+{% load static djstripe_tags %}
+
+{% block head %}
+<title>Choose Subscription| WheelDine</title>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-78607915-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+{% endblock %}
+
+{% block style %}
+<style>
+
+body{
+  background-color:#ECF0F1;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}
+.content{
+  margin-top:7%;
+}
+
+@media only screen and (max-width : 992px) {
+      .wrapper {
+        padding-left: 0 !important;
+      }
+    }
+  .wrapper{
+      padding-left: 7em;
+    }
+.nav-wrapper{
+  text-shadow: 1px 1px 1px #000;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+<nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+        <div class="hide-on-large-only">
+    <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+      </div>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+{% if user.is_authenticated %}
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+
+
+
+      </div>
+
+    </nav>
+       <ul id="nav-mobile" class="side-nav">
+            {% if user.is_authenticated %}
+            <li><a href="#!">Welcome {{request.user}}</a></li>
+    <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Charge Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+  <ul id="slide-out" class="side-nav fixed">
+   <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+
+    <li><a href="#!">Welcome {{request.user}}</a></li>
+    <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Charge Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+      <!-- <li><a href="#!">Reviews</a></li> -->
+
+    </ul>
+{{ block.super }}
+
+
+<div class="content">
+<div class="row center">
+  <div class="col s12 l8 offset-l2">
+<div class="card blue-grey darken-4">
+  <div class="card-content">
+ <div class="row">
+
+      <div class="col s12 l12">
+        <a href="{% url 'djstripe:account' %}" class="breadcrumb">Account Information</a>
+        <a href="" class="breadcrumb">Confirm your Subscription</a>
+        <a href="{% url 'djstripe:history' %}" class="breadcrumb">Choose a Subscription</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-content">
+<h4>Choose a Subscription</h4>
+<hr width="65%">
+
+
+
+{% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+{% endif %}
+{% if view.error %}
+    <div class="alert alert-error">{{ view.error }}</div>
+{% endif %}
+
+<div class="row">
+    {% for plan in PLAN_LIST %}
+      {% with plan_count=PLAN_LIST|length %}
+        <div class="col s12 m12 l12">
+      {% endwith %}
+            {% if customer.current_subscription.plan == plan.plan and customer.current_subscription.status != CurrentSubscription.STATUS_CANCELLED %}
+
+<a class="waves-effect waves-light disabled"></a>
+            {% else %}
+            <a class="waves-effect waves-light" href="{% url 'djstripe:confirm' plan=plan.plan %}" role="button">
+            {% endif %}
+
+                  <h5>{{ plan.name }}</h5>
+                  <p>{{ plan.description }}</p>
+            {% if customer.current_subscription.plan == plan.plan and customer.current_subscription.status != CurrentSubscription.STATUS_CANCELLED %}
+            <h6>[Your Current Plan]</h6>
+            </div>
+
+            {% else %}
+            </a>
+              {% if customer.current_subscription.amount < plan.price|djdiv:100 %}
+
+              {% elif customer.current_subscription.amount > plan.price|djdiv:100 %}
+
+              {% endif %}
+            {% endif %}
+
+    {% endfor %}
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock content %}

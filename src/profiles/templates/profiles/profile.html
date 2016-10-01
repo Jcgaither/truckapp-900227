@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>{{request.user}} | FoodEngine</title>
+<script src="{% static "js/jquery.min.js" %}"></script>
+{% endblock %}
+{% block style %}
+<style>
+h1,h2,h3,h4,h5,h6,li{
+	color:#565a5c;
+}
+body{
+	background-color:#F0F2F0;
+}
+.tabs .tab a{
+	color:#000!important;
+}
+
+.tabs .indicator {
+	background-color:#26a69a;
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+
+}
+.wrapper{
+      padding-left: 16em;
+    }
+
+@media only screen and (max-width : 992px) {
+      .wrapper {
+        padding-left: 0;
+      }
+    }
+.mdi-navigation-menu{
+	color:#fff;
+}
+
+.inner-wrapper{
+	margin-top:6%;
+}
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="wrapper">
+ <div class="navbar">
+    <nav class="blue-grey darken-4">
+      <div class="nav-wrapper">
+      	<div class="hide-on-large-only">
+    <a href="{% url 'home' %}"><img src='/static/img/white-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+      </div>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><form class="navbar-form navbar-right" role="search" action='/search/' method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" value='{{ request.GET.q }}' placeholder="Search">
+                    </div>
+                </form></li>
+                <li></li>
+          <li><a href="{% url 'map' %}">Map</a></li>
+  {% if user.is_authenticated %}
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}" class="navbutton">Create an account</a></li></li>
+  {% endif %}
+        </ul>
+      </div>
+              <ul id="nav-mobile" class="side-nav">
+            {% if user.is_authenticated %}
+            <li><a href="#!">Welcome {{request.user}}</a></li>
+    <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Charge Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+   <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  {% else %}
+  <li><a href="{% url 'map' %}">Map</a></li>
+  <li><a href="{% url 'account_login' %}">Login</a></li>
+  <li><a href="{% url 'account_signup' %}">Create an account</a></li></li>
+  {% endif %}
+</ul>
+
+    </nav>
+  </div>
+
+
+
+ <ul id="slide-out" class="side-nav fixed">
+ 	 <a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="29" alt="WheelDine"></a>
+
+ 	  <li><a href="#!">Welcome {{request.user}}</a></li>
+ 	  <li><a href="{% url 'profile' %}">Profile</a></li>
+      <li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Account</a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="{% url 'djstripe:account' %}">Subscription</a></li>
+                <li><a href="{% url 'djstripe:history' %}">Payment History</a></li>
+                <li><a href="{% url 'djstripe:change_card' %}">Charge Card</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
+      <!-- <li><a href="#!">Reviews</a></li> -->
+
+    </ul>
+
+
+
+
+
+
+
+<div class='inner-wrapper'>
+<div class="row center">
+<!-- 	<div class="col s12 m10 l8 offset-l2 offset-m1">
+<h5>{{profile.user}}</h5>
+</div> -->
+<div class="tab-wrapper">
+<div class="row">
+    <div class="col s12 m10 l8 offset-l2 offset-m1">
+    	<div class="card white">
+    		<div class="card-content black-text">
+      <ul class="tabs">
+        <li class="tab col s3"><a href="#trucks">Owned Trucks</a></li>
+        <li class="tab col s3"><a href="#activity">Activity</a></li>
+
+      </ul>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="content-wrapper">
+	<div id="trucks" class="col s12">
+		<div class="row">
+			<div class='col s12 m10 l8 offset-l2 offset-m1'>
+				<div class="card white">
+					<div class="card-content black-text">
+						<span class="card-title"><b>Owned Trucks</b></span>
+						<div class="row">
+							{% for Truck in owned %}
+
+							<li> <a href='{{ Truck.get_absolute_url }}'>{{ Truck.plus_truck_name }}</a></li>
+
+
+
+							{% endfor %}
+
+
+							</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	<div id="activity" class="col s12">
+		<div class="row">
+			<div class='col s12 m10 l8 offset-l2 offset-m1'>
+				<div class="card white">
+					<div class="card-content black-text">
+						{% if follow %}
+						<span class="card-title"><b>Visited Trucks</b>: {{follow|length}} </span>
+						{% if follower %}
+						<p> {{follower|length}}</p>
+						{% else %}
+
+							{% endif %}
+						{% else %}
+						<span class="card-title"><b>Visited Trucks</b></span>
+						{% endif %}
+						<div class="row">
+		{% for following in follow %}
+		{% if following == None %}
+		{% else %}
+      	<li><a href='{{ following.get_absolute_url }}'>{{following}}</a></li>
+				{% endif %}
+      	{% endfor %}
+						</div>
+					</div>
+					</div>
+					</div>
+					</div>
+				</div>
+
+
+
+
+<div id="visitedlist" class="modal modal-fixed-footer">
+
+    <div class="modal-content">
+      <h5>Visited</h5>
+      <ul>
+      {% for following in follow %}
+
+      	<li>{{follower}}</li>
+      	{% endfor %}
+      </ul>
+
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+  // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+  $('.modal-trigger').leanModal();
+});
+</script>
+{% endblock %}
+<!-- {% include "djstripe/account.html" %} -->
+
+<!-- <div class='container'>
+	<div class='row'>
+		<h1>{{ profile.user }}</h1>
+		{% for Truck in owned %}
+		<h1> {{ Truck.truck_name }}</h1>
+
+		{% endfor %}
+		Following
+		{% for follower in follow %}
+		<h6><a href='{{ follower.get_absolute_url }}'>{{follower}}</a></h6>
+		{% endfor %}
+
+
+		{% if follow %}
+		<p> Recent Activity: </p>
+		{% else %}
+		<p>Follow Trucks to get updates!</p>
+		{% endif %}
+
+
+
+		{% for recently in recent %}
+		<li> {{recently.truck}}, {{recently.post}}</li>
+		{% endfor %}
+
+		<h3>
+</div> -->

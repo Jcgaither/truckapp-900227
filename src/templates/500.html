@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head %}
+<title>500 | WheelDine</title>
+{% endblock %}
+
+{% block style %}
+<style>
+body {
+  background-color:#edefed;
+  webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.wrapper {
+	margin-top:8%;
+}
+.wrapper h1, p, h5{
+	color:#565a5c;;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<div class='wrapper'>
+<div class='container'>
+	<div class='row center'>
+		<a href="{% url 'home' %}"><img src='/static/img/dark-color-logo-2' class="brand-logo img-responsive" height="35" alt="WheelDine"></a>
+		<h1>500</h1>
+		<h5>We're sorry!</h5>
+		<br>
+		<h5>The server encountered an internal error!</h5>
+		<p>Please try again later!</p>
+		<ul>
+			<li><a href="{% url 'home' %}">Home</a></li>
+			<li><a href="{% url 'envelope-contact' %}">Contact</a></li>
+			<li><a href="{% url 'about' %}">About</a></li>
+  		<ul>
+  		</div>
+  	</div>
+  </div>
+  {% endblock %}

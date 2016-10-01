@@ -1,0 +1,22 @@
+html, body {
+  background-color:#edefed;
+    webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+     width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+
+}
+#note{
+  color:#a5a5a5;
+
+}
+.brand-logo{
+  margin-left:1%;
+  margin-top:15px;
+}

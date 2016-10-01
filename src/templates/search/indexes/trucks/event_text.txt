@@ -1,0 +1,5 @@
+{{ object.event_name }}
+{{ object.event_address }}
+{{ object.event_state }}
+{{ object.event_city }}
+{{ object.event_postal_code }}
