@@ -63,7 +63,7 @@ class EmailCollection(models.Model):
 	def __unicode__(self):
 		return self.email
 
-#remove null=true for times, phone numbers,Switch timefiled to charfield)
+
 class PlusTruck(models.Model):
 	owner = models.ForeignKey(User, related_name="trucks")
 	plus_truck_name = models.CharField(max_length=200)
@@ -79,8 +79,8 @@ class PlusTruck(models.Model):
 	plus_thumbnail = ImageField(upload_to="images/", null=True, blank=True)
 	plus_phone_number = PhoneNumberField(null=True, blank=True)
 	plus_email = models.EmailField(null=True, blank=True)
-	open_time = models.CharField(max_length=15, blank=True, null=True)
-	close_time = models.CharField(max_length=15, blank=True, null=True)
+	open_time = models.CharField(max_length=15, blank=True, null=True, default='')
+	close_time = models.CharField(max_length=15, blank=True, null=True, default='')
 	plus_status = models.CharField(max_length=140, default='', null=True, blank=True)
 	slug = models.SlugField()
 	top_truck = models.BooleanField(default=False)

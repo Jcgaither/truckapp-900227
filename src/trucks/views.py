@@ -235,7 +235,7 @@ class PlusTruckDetailView(DetailView):
 # 		context = super(PlusTruckImageDetailView, self).get_context_data(**kwargs)
 # 		return context
 # #
-# """ Image Delete View THIS IS DELETING THE ENTIRE TRUCK OBJECT """
+# """ Image Delete View """
 # class PlusTruckImageDeleteView(DeleteView):
 # 	model = PlusTruckImage
 # 	template_name = 'trucks/delete_image.html'

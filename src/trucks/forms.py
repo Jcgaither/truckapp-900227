@@ -35,7 +35,7 @@ class PlusTruckCreateForm(forms.ModelForm):
 		model = PlusTruck
 		fields = (
 			'plus_truck_name',
-			'plus_phone_number',
+			'plus_email',
 			'plus_address',
 			'plus_city',
 			'plus_state',

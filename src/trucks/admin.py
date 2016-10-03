@@ -17,8 +17,23 @@ class TruckDeleteRequest(admin.ModelAdmin):
 		BaseDeleteRequest.save()
 
 
-class TestAdminCoords(admin.ModelAdmin):
-	form = PlusTruckCreateForm
+class PlusTruckAdmin(admin.ModelAdmin):
+	fields = (
+		'plus_truck_name',
+		'plus_phone_number',
+		'plus_address',
+		'plus_city',
+		'plus_state',
+		'plus_postal_code',
+		'plus_menu',
+		'plus_menu_photo',
+		'plus_food_type',
+		'plus_description',
+		'plus_thumbnail',
+		'plus_status',
+		'slug',
+
+		)
 
 class EmailCollectionAdmin(admin.ModelAdmin):
 	form = EmailCollectionForm
@@ -33,7 +48,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 
 admin.site.register(BaseTruck, TruckAdmin)
 admin.site.register(DeleteRequest, TruckDeleteRequest)
-admin.site.register(PlusTruck, TestAdminCoords)
+admin.site.register(PlusTruck, PlusTruckAdmin)
 admin.site.register(EmailCollection, EmailCollectionAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
