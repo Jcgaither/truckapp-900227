@@ -5,12 +5,14 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.core.mail import EmailMessage
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.list import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.template import RequestContext
+from django.template import RequestContext, Context
+from django.template.loader import get_template
 from actstream.models import followers, Action
 from trucks.forms import BaseTruckCreateForm, BaseDeleteRequest, PlusTruckCreateForm, PlusTruckUpdateForm, EmailCollectionForm, EventCreateForm, FeedbackForm
 from trucks.models import BaseTruck, PlusTruck, EmailCollection, Event, Feedback
@@ -82,6 +84,16 @@ def TruckHomeView(request):
 	if request.method == "POST":
 		form = EmailCollectionForm(request.POST)
 		if form.is_valid():
+			contact_email = request.POST.get('email')
+			template = get_template('trucks/mailinglist_template.txt')
+			context = Context({
+				'email': contact_email,
+			})
+			content = template.render(context)
+			email = EmailMessage('Hey', content, "WheelDine <hello@wheeldine.com",
+			[contact_email], reply_to=['hello@wheeldine.com']
+			)
+			email.send()
 			EmailCollection = form.save(commit=False)
 			EmailCollection.save()
 			messages.success(request, "Successfully joined the mailing list!")
@@ -308,7 +320,20 @@ class CreateFeedbackView(SuccessMessageMixin, CreateView):
 		feedback = form.save(commit=False)
 		feedback.food_truck = self.food_truck
 		feedback.user = self.request.user
-		feedback.save()
+		if Feedback.objects.count() % 5 == 0:
+			owner_email = feedback.food_truck.owner.email
+			slug = feedback.food_truck.slug
+			template = get_template('trucks/feedback_template.txt')
+			context = Context({
+			'owner_email':feedback.food_truck.owner.email,
+			'slug':feedback.food_truck.slug,})
+			content = template.render(context)
+			email = EmailMessage('You have new feedback!', content, "WheelDine <hello@wheeldine.com",
+			[owner_email], reply_to=['hello@wheeldine.com'])
+			email.send()
+			feedback.save()
+		else:
+			feedback.save()
 		return super(CreateFeedbackView, self).form_valid(form)
 
 """ Feedback Detail View """

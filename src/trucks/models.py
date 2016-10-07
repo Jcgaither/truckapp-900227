@@ -213,7 +213,7 @@ class Feedback(models.Model):
 
 
 	def unicode(self):
-		return self.food_truck
+		return self.timestamp
 
 	def get_absolute_url(self):
 		return reverse("plus_truck_detail", kwargs={'slug':self.slug})
