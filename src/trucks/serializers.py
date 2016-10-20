@@ -1,6 +1,6 @@
 from rest_framework import serializers, viewsets, generics, permissions
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from trucks.models import BaseTruck, PlusTruck, Event
+from trucks.models import BaseTruck, PlusTruck, Event, PlusTruckImage
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from django.conf import settings
 
@@ -23,6 +23,14 @@ class PlusTruckViewSet(viewsets.ModelViewSet):
 	queryset = PlusTruck.objects.all()
 	serializer_class = PlusTruckSerializer
 
+class PlusTruckImageSerializer(serializers.ModelSerializer):
+	class Meta:
+		model  = PlusTruckImage
+		fields = ('pk','food_truck', 'file',)
+
+class PlusTruckImageViewSet(viewsets.ModelViewSet):
+	queryset = PlusTruckImage.objects.all()
+	serializer_class = PlusTruckImageSerializer
 
 class BaseTruckSerializer(GeoFeatureModelSerializer):
 	class Meta:

@@ -14,7 +14,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from actstream.models import followers, Action
-from trucks.forms import BaseTruckCreateForm, BaseDeleteRequest, PlusTruckCreateForm, PlusTruckUpdateForm, EmailCollectionForm, EventCreateForm, FeedbackForm
+from trucks.forms import BaseTruckCreateForm, BaseDeleteRequest, PlusTruckCreateForm, PlusTruckUpdateForm, PlusTruckImageForm, EmailCollectionForm, EventCreateForm, FeedbackForm
 from trucks.models import BaseTruck, PlusTruck, EmailCollection, Event, Feedback
 from profiles.models import Profile
 from permission.decorators import permission_required
@@ -200,25 +200,25 @@ class PlusTruckDetailView(DetailView):
 			return obj
 
 
-# """ PlusTruck Imageupload View """
-#
-# class PlusTruckImageUploadView(CreateView):
-# 	form_class = PlusTruckImageForm
-# 	template_name = 'trucks/add_image.html'
-#
-# 	def get_success_url(self):
-# 		messages.success(self.request, "Images successfully uploaded")
-# 		return self.food_truck.get_absolute_url()
-#
-# 	@cached_property
-# 	def food_truck(self):
-# 		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
-#
-# 	def form_valid(self, form):
-# 		file = form.save(commit=False)
-# 		file.food_truck = self.food_truck
-# 		file.save()
-# 		return super(PlusTruckImageUploadView, self).form_valid(form)
+""" PlusTruck Imageupload View """
+
+class PlusTruckImageUploadView(CreateView):
+	form_class = PlusTruckImageForm
+	template_name = 'trucks/add_image.html'
+
+	def get_success_url(self):
+		messages.success(self.request, "Images successfully uploaded")
+		return self.food_truck.get_absolute_url()
+
+	@cached_property
+	def food_truck(self):
+		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
+
+	def form_valid(self, form):
+		file = form.save(commit=False)
+		file.food_truck = self.food_truck
+		file.save()
+		return super(PlusTruckImageUploadView, self).form_valid(form)
 #
 # """ PlusTruck Image update View """
 #
@@ -301,7 +301,7 @@ class EventDetailView(DetailView):
 
 
 """ Feedback Create View """
-from django.contrib.auth.decorators import login_required
+
 class CreateFeedbackView(SuccessMessageMixin, CreateView):
 	model = Feedback
 	fields = ['positive' ,'negative', 'suggestions']
@@ -362,7 +362,7 @@ def PricingView(request):
 """ Terms of Service Page """
 
 def ToSView(request):
-	return render(request, 'trucks/tos.html')
+	return render(request, 'trucks/index.html')
 
 """ Privacy Policy Page """
 

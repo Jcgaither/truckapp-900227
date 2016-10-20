@@ -1,9 +1,10 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic.base import RedirectView
 from . import views
 from .views import (TruckHomeView, TruckCreateView, TruckDeleteView, PlusTruckCreateView, PlusTruckDeleteView,
 PlusTruckUpdateView, PlusTruckDetailView, MapView, FormSelectView, RankView,
-EventCreateView, EventDetailView, CreateFeedbackView, FeedbackDetailView, AboutView, PricingView, ToSView, PrivacyPolicyView)
+EventCreateView, EventDetailView, CreateFeedbackView, FeedbackDetailView, AboutView, PlusTruckImageUploadView, PricingView, ToSView, PrivacyPolicyView)
 
 urlpatterns = [
    url(r'^$', 'trucks.views.TruckHomeView', name='home'),
@@ -23,7 +24,7 @@ urlpatterns = [
    url(r'^add/event/$', EventCreateView.as_view(), name='event_create'),
    url(r'^event/(?P<slug>[-\w]+)$', EventDetailView.as_view(), name='event_detail'),
    url(r'^(?P<slug>[-\w]+)$', PlusTruckDetailView.as_view(), name='plus_truck_detail'),
-   # url(r'^(?P<slug>[-\w]+)/addimage/$', PlusTruckImageUploadView.as_view(), name='add_images'),
+   url(r'^(?P<slug>[-\w]+)/addimage/$', PlusTruckImageUploadView.as_view(), name='add_images'),
    # url(r'^(?P<slug>[-\w]+)/updateimage/$', PlusTruckImageUpdateView.as_view(), name='update_images'),
    url(r'^(?P<slug>[-\w]+)/addfeedback/$', CreateFeedbackView.as_view(), name='add_feedback'),
    url(r'^(?P<slug>[-\w]+)/feedback/$', FeedbackDetailView.as_view(), name='feedback'),

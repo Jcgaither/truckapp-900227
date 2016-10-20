@@ -3,20 +3,22 @@ from django.conf.urls import include, url
 from django.conf.urls import handler404, handler500
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.generic.base import RedirectView
 from trucks.models import PlusTruck, BaseTruck, Event
 from trucks import json_views
 from actstream import views
-from trucks.serializers import PlusTruckViewSet
+from trucks.serializers import PlusTruckViewSet, BaseTruckViewSet, PlusTruckImageViewSet
 
 from rest_framework import routers
 router = routers.DefaultRouter()
-router.register(r"trucks", PlusTruckViewSet)
+router.register(r"plustrucks", PlusTruckViewSet,)
+router.register(r"basetrucks", BaseTruckViewSet,)
+router.register("images", PlusTruckImageViewSet, "images")
 admin.autodiscover()
 
 import permission; permission.autodiscover()
 
 urlpatterns = [
-
     url(r'^accounts/', include('allauth.urls')),
     url(r'^063093227900/', include(admin.site.urls)),
     url(r'', include('trucks.urls')),

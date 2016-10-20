@@ -1,6 +1,6 @@
 from django import forms
 import geocoder
-from trucks.models import BaseTruck, DeleteRequest, PlusTruck, EmailCollection, Event, Feedback
+from trucks.models import BaseTruck, DeleteRequest, PlusTruck, EmailCollection, Event, Feedback, PlusTruckImage
 from localflavor.us.forms import USStateField
 from django.forms.models import modelformset_factory
 from django.conf import settings
@@ -69,12 +69,12 @@ class PlusTruckUpdateForm(forms.ModelForm):
 		          'plus_thumbnail',
 		          'open_time',
 		          'close_time',)
-# class PlusTruckImageForm(forms.ModelForm):
-# 	class Meta:
-# 		model = PlusTruckImage
-# 		fields = (
-# 			'file',
-# 		)
+class PlusTruckImageForm(forms.ModelForm):
+	class Meta:
+		model = PlusTruckImage
+		fields = (
+			'file',
+		)
 
 
 class EmailCollectionForm(forms.ModelForm):
