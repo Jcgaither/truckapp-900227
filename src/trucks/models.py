@@ -145,7 +145,7 @@ add_permission_logic(PlusTruck, AuthorPermissionLogic(
 
 class PlusTruckImage(models.Model):
 	food_truck = models.ForeignKey(PlusTruck, blank=True, null=True, on_delete=models.SET_NULL)
-	file = models.FileField(upload_to="images/%Y/%m/%d")
+	file = models.ImageField(upload_to="images/%Y/%m/%d")
 
 	def __unicode__(self):
 		return self.file.url

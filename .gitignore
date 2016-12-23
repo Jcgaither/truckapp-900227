@@ -8,4 +8,20 @@ db.sqlite3
 .DS_Store
 src/truckapp/settings/local.py
 src/truckapp/settings/base.py
+src/truckapp/settings/whoosh_index
+src/trucks/static/js/app.js
+src/trucks/static/js/images.rest.js
+src/trucks/static/js/filesModelDirective.js
+src/trucks/static/js/photos.module.js
+src/trucks/static/js/photos.service.js
+src/trucks/static/js/trucks.js
+src/trucks/static/js/images.rest.js
+
+src/trucks/templates/trucks/index.html
+
+truckapp.sublime-workspace
+truckapp.sublime-project
+
+
+
 

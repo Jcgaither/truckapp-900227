@@ -1,6 +1,3 @@
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import render_to_response
-from django.utils.functional import cached_property
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
@@ -13,13 +10,15 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.template import RequestContext, Context
 from django.template.loader import get_template
+from django.shortcuts import render, render_to_response, get_object_or_404
+from django.utils.functional import cached_property
 from actstream.models import followers, Action
-from trucks.forms import BaseTruckCreateForm, BaseDeleteRequest, PlusTruckCreateForm, PlusTruckUpdateForm, PlusTruckImageForm, EmailCollectionForm, EventCreateForm, FeedbackForm
+from trucks.forms import BaseTruckCreateForm, BaseDeleteRequest, PlusTruckCreateForm, PlusTruckUpdateForm, EmailCollectionForm, EventCreateForm, FeedbackForm
 from trucks.models import BaseTruck, PlusTruck, EmailCollection, Event, Feedback
 from profiles.models import Profile
 from permission.decorators import permission_required
-from actstream.models import actor_stream, Follow
-from actstream import action
+from actstream.models import actor_stream, Follow, followers, Action
+
 
 
 class MultipleObjectMixin(object):
@@ -202,66 +201,24 @@ class PlusTruckDetailView(DetailView):
 
 """ PlusTruck Imageupload View """
 
-class PlusTruckImageUploadView(CreateView):
-	form_class = PlusTruckImageForm
-	template_name = 'trucks/add_image.html'
+# class PlusTruckImageUploadView(CreateView):
+# 	form_class = PlusTruckImageForm
+# 	template_name = 'trucks/add_image.html'
 
-	def get_success_url(self):
-		messages.success(self.request, "Images successfully uploaded")
-		return self.food_truck.get_absolute_url()
-
-	@cached_property
-	def food_truck(self):
-		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
-
-	def form_valid(self, form):
-		file = form.save(commit=False)
-		file.food_truck = self.food_truck
-		file.save()
-		return super(PlusTruckImageUploadView, self).form_valid(form)
-#
-# """ PlusTruck Image update View """
-#
-# class PlusTruckImageUpdateView(SuccessMessageMixin, UpdateView):
-# 	model = PlusTruckImage
-# 	fields = ['file',]
-# 	success_message = "Images successfully updated"
-# 	template_name = 'trucks/delete_image.html'
-#
-# 	def get_object(self):
-# 		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
-#
-# 	def form_valid(self, form):
-# 		return super(PlusTruckImageUpdateView, self).form_valid(form)
-#
-#
-# """ Image Detail View """
-# class PlusTruckImageDetailView(DetailView):
-# 	model = PlusTruckImage
-# 	template_name = 'trucks/plus_truck_detail.html'
-#
-# 	def get_object(self):
-# 		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
-#
-# 	def get_context_data(self, **kwargs):
-# 		context = super(PlusTruckImageDetailView, self).get_context_data(**kwargs)
-# 		return context
-# #
-# """ Image Delete View """
-# class PlusTruckImageDeleteView(DeleteView):
-# 	model = PlusTruckImage
-# 	template_name = 'trucks/delete_image.html'
-# 	success_message = "Image successfully deleted"
-#
-# 	def get_object(self):
-# 		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
-#
-# 	def delete(self, request, *args, **kwargs):
-# 		messages.success(self.request, self.success_message)
-# 		return super(PlusTruckImageDeleteView, self).delete(request, *args, **kwargs)
-#
 # 	def get_success_url(self):
-# 		return reverse('home')
+# 		messages.success(self.request, "Images successfully uploaded")
+# 		return self.food_truck.get_absolute_url()
+
+# 	@cached_property
+# 	def food_truck(self):
+# 		return get_object_or_404(PlusTruck, slug=self.kwargs['slug'])
+
+# 	def form_valid(self, form):
+# 		file = form.save(commit=False)
+# 		file.food_truck = self.food_truck
+# 		file.save()
+# 		return super(PlusTruckImageUploadView, self).form_valid(form)
+
 
 """ Event Create View """
 
@@ -300,7 +257,11 @@ class EventDetailView(DetailView):
 			return obj
 
 
-""" Feedback Create View """
+"""
+Feedback Create View 
+Submit user feedback for PlusTrucks 
+
+"""
 
 class CreateFeedbackView(SuccessMessageMixin, CreateView):
 	model = Feedback
@@ -362,7 +323,7 @@ def PricingView(request):
 """ Terms of Service Page """
 
 def ToSView(request):
-	return render(request, 'trucks/index.html')
+	return render(request, 'trucks/tos.html')
 
 """ Privacy Policy Page """
 

@@ -24,9 +24,15 @@ class PlusTruckViewSet(viewsets.ModelViewSet):
 	serializer_class = PlusTruckSerializer
 
 class PlusTruckImageSerializer(serializers.ModelSerializer):
+	food_truck = PlusTruckSerializer(read_only=True, required=False)
 	class Meta:
 		model  = PlusTruckImage
-		fields = ('pk','food_truck', 'file',)
+		fields = ('pk', 'food_truck', 'file',)
+
+	def get_validation_exclusions(self, *args, **kwargs):
+		exclusions = super(PlusTruckImageSerializer, self).get_validation_exclusions()
+
+		return exclusions + ['food_truck']
 
 class PlusTruckImageViewSet(viewsets.ModelViewSet):
 	queryset = PlusTruckImage.objects.all()
