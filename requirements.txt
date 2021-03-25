@@ -1,7 +1,7 @@
 Django==1.8.5
 Pillow==2.9.0
 PyJWT==1.4.0
-PyYAML==3.12
+PyYAML==5.4
 Whoosh==2.7.4
 app-version==0.2.1
 backports.ssl-match-hostname==3.5.0.1
